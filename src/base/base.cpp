@@ -3,6 +3,12 @@
 
 namespace base
 {
+    std::ostream& operator<<(std::ostream& os, const DeviceType& device_type)
+    {
+        os << "DeviceType:" << static_cast<int>(device_type) << ' ' << DeviceTypeToString(device_type);
+        return os;
+    }
+
     Status::Status(int code, std::string err_message)
     :code_(code), message_(err_message)
     {}
@@ -76,10 +82,11 @@ namespace base
             return Status{StatusCode::InvalidArgument, err_msg};
         }
 
-        std::ostream& operator<<(std::ostream& os, const Status& x)
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Status& x)
         {
             os << "Status_code:" << x.get_err_code() << ' ' << "Error_msg:" << x.get_err_msg();
             return os;
         }
-    }
 }

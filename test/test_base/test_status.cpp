@@ -37,3 +37,40 @@ TEST(StatusTest, SetErrorMessage) {
     status.set_err_msg("An error occurred");
     EXPECT_EQ(status.get_err_msg(), "An error occurred");
 }
+
+// 测试错误工厂函数
+TEST(StatusTest, ErrorFactoryFunction) {
+    // using namespace error;
+    base::Status status;
+    status = base::error::Success("success");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::Success);
+    EXPECT_EQ(status.get_err_msg(), "success");
+
+    status = base::error::InvalidArgument("invalid argument");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::InvalidArgument);
+    EXPECT_EQ(status.get_err_msg(), "invalid argument");
+
+    status = base::error::FunctionNotImplement("not found");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::FunctionNotImplement);
+    EXPECT_EQ(status.get_err_msg(), "not found");
+
+    status = base::error::PathNotValid("invalid path");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::PathNotValid);
+    EXPECT_EQ(status.get_err_msg(), "invalid path");
+
+    status = base::error::ModelParseError("parse error");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::ModelParseError);
+    EXPECT_EQ(status.get_err_msg(), "parse error");
+
+    status = base::error::InternalError("internal error");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::InternalError);
+    EXPECT_EQ(status.get_err_msg(), "internal error");
+
+    status = base::error::KeyValueHasExist("key value has been existed");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::KeyValueHasExist);
+    EXPECT_EQ(status.get_err_msg(), "key value has been existed");
+
+    status = base::error::InvalidArgument("invalid argument");
+    EXPECT_EQ(status.get_err_code(), base::StatusCode::InvalidArgument);
+    EXPECT_EQ(status.get_err_msg(), "invalid argument");
+}

@@ -44,6 +44,13 @@ namespace base
         ModelTypeLLama2 = 1,
     };
 
+    inline std::string DeviceTypeToString(DeviceType device_type)
+    {
+        if (device_type == DeviceType::DeviceCPU) return "CPU";
+        if (device_type == DeviceType::DeviceCUDA) return "CUDA";
+        else return "Unknown";
+    }
+
     inline size_t DataTypeSize(DataType data_type)
     {
         if (data_type == DataType::DataTypeFp32) return sizeof(float);
@@ -51,6 +58,8 @@ namespace base
         if (data_type == DataType::DataTypeInt32) return sizeof(int32_t);
         else return 0;
     }
+
+    std::ostream& operator<<(std::ostream& os, const DeviceType& x);
 
     class NoCopyable
     {
@@ -109,17 +118,17 @@ namespace base
     {
         #define STATUS_CHECK(call)                    \
         do                                            \
-        {                                             \     
-            const base::Status& status = call;        \  
-            if (!status)                              \  
-            {                                         \   
+        {                                             \
+            const base::Status& status = call;        \
+            if (!status)                              \
+            {                                         \
                 const size_t buf_size = 512;          \
-                char buf[buf_size];                   \   
-                snprintf(buf)                         \  
-            }                                         \               
-        } while (0)                                   \  
+                char buf[buf_size];                   \
+                snprintf(buf)                         \
+            }                                         \
+        } while (0)                                   \
 
-        Status Succcess(const std::string& err_msg = "");
+        Status Success(const std::string& err_msg = "");
 
         Status FunctionNotImplement(const std::string& err_msg = "");
 
@@ -138,4 +147,4 @@ namespace base
 
 }
 
-#endif INCLUDE_BASE_BASE_H_
+#endif  // INCLUDE_BASE_BASE_H_
