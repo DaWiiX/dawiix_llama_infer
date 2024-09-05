@@ -1,5 +1,7 @@
 #ifndef INCLUDE_BASE_ALLOC_H_
 #define INCLUDE_BASE_ALLOC_H_
+#include <map>
+#include <memory>
 #include "base.h"
 
 namespace base 
@@ -69,7 +71,67 @@ namespace base
         : data(data), byte_size(byte_size), busy(busy)
         {}
     };
+
+    class CUDADevcieAllocator : public DeviceAllocator
+    {
+        public:
+            explicit CUDADevcieAllocator();
+
+            void* allocate(size_t byte_size) const override;
+
+            void release(void* ptr) const override;
     
+        private:
+            mutable std::map<int, size_t> no_busy_cnt_;
+            mutable std::map<int, CudaMemoryBuffer> big_buffers_map_;
+            mutable std::map<int, CudaMemoryBuffer> cuda_buffers_map_;
+    };
+
+    class CUPDeviceAllocatorFactory 
+    {
+        public:
+            static std::shared_ptr<CPUDeviceAllocator> get_instance()
+            {
+                if (instance == nullptr) instance = std::make_shared<CPUDeviceAllocator>();
+                return instance;
+            }
+
+        private:
+            static std::shared_ptr<CPUDeviceAllocator> instance;
+    };
+
+    class CUDADeviceAllocatorFactory 
+    {
+        public:
+            static std::shared_ptr<CUDADevcieAllocator> get_instance()
+            {
+                if (instance == nullptr) instance = std::make_shared<CUDADevcieAllocator>();
+                return instance;
+            }
+
+        private:
+            static std::shared_ptr<CUDADevcieAllocator> instance;
+    };
+
+    class DeviceAllocatorFactory 
+    {
+        public:
+            static std::shared_ptr<DeviceAllocator> get_instance(DeviceType device_type)
+            {
+                switch (device_type)
+                {
+                    case DeviceType::DeviceCPU:
+                        return CUPDeviceAllocatorFactory::get_instance();
+
+                    case DeviceType::DeviceCUDA:
+                        return CUDADeviceAllocatorFactory::get_instance();
+
+                    default:
+                        LOG(FATAL) << "Unknown device type: " << device_type;
+                        return nullptr;
+                }
+            }
+    };
 } // namespace base
 
 #endif // INCLUDE_BASE_ALLOC_H_
