@@ -145,7 +145,8 @@ namespace base {
         // 遍历每个设备，如果该设备中的大内存占用超过某个阈值，我们将尝试释放空闲区
         for (auto& it : this->big_buffers_map_)
         {
-            if (this->big_no_busy_cnt_[it.first] > 8*1024*1024*1024)
+            size_t threshold = 8ULL*1024*1024*1024;
+            if (this->big_no_busy_cnt_[it.first] > threshold)
             {
                 status = cudaSetDevice(it.first);
                 auto& cuda_buffers = it.second;
@@ -200,7 +201,7 @@ namespace base {
         return;
     }
 
-    
+    std::shared_ptr<CUDADeviceAllocator> CUDADeviceAllocatorFactory::instance = nullptr;
 
 
 } // namespace base

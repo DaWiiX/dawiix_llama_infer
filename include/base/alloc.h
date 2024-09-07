@@ -29,8 +29,8 @@ namespace base
 
         virtual void memcpy
         (
-            const void* src_ptr,
             void* dest_ptr,
+            const void* src_ptr,
             size_t byte_size,
             MemcpyKind memcpy_kind = MemcpyKind::MemcpyCPU2CPU,
             void* stream = nullptr,
@@ -88,7 +88,7 @@ namespace base
             mutable std::map<int, std::vector<CudaMemoryBuffer>> cuda_buffers_map_;
     };
 
-    class CUPDeviceAllocatorFactory 
+    class CPUDeviceAllocatorFactory 
     {
         public:
             static std::shared_ptr<CPUDeviceAllocator> get_instance()
@@ -122,7 +122,7 @@ namespace base
                 switch (device_type)
                 {
                     case DeviceType::DeviceCPU:
-                        return CUPDeviceAllocatorFactory::get_instance();
+                        return CPUDeviceAllocatorFactory::get_instance();
 
                     case DeviceType::DeviceCUDA:
                         return CUDADeviceAllocatorFactory::get_instance();

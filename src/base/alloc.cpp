@@ -6,8 +6,8 @@ namespace base
 {
     void DeviceAllocator::memcpy
     (
-        const void* src_ptr,
         void* dest_ptr,
+        const void* src_ptr,
         size_t byte_size,
         MemcpyKind memcpy_kind,
         void* stream,

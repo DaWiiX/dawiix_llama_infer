@@ -41,5 +41,5 @@ namespace base {
         else free(ptr);
     }
 
-    std::shared_ptr<CPUDeviceAllocator> CUPDeviceAllocatorFactory::instance = nullptr;
+    std::shared_ptr<CPUDeviceAllocator> CPUDeviceAllocatorFactory::instance = nullptr;
 } // namespace base
