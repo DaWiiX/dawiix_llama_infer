@@ -59,7 +59,7 @@ namespace base
             void release(void* ptr) const override;
     };
 
-    struct CudaMemoryBuffer 
+    struct CudaMemoryBuffer
     {
         void* data;
         size_t byte_size;
@@ -72,10 +72,10 @@ namespace base
         {}
     };
 
-    class CUDADevcieAllocator : public DeviceAllocator
+    class CUDADeviceAllocator : public DeviceAllocator
     {
         public:
-            explicit CUDADevcieAllocator();
+            explicit CUDADeviceAllocator();
 
             void* allocate(size_t byte_size) const override;
 
@@ -83,8 +83,9 @@ namespace base
     
         private:
             mutable std::map<int, size_t> no_busy_cnt_;
-            mutable std::map<int, CudaMemoryBuffer> big_buffers_map_;
-            mutable std::map<int, CudaMemoryBuffer> cuda_buffers_map_;
+            mutable std::map<int, size_t> big_no_busy_cnt_;
+            mutable std::map<int, std::vector<CudaMemoryBuffer>> big_buffers_map_;
+            mutable std::map<int, std::vector<CudaMemoryBuffer>> cuda_buffers_map_;
     };
 
     class CUPDeviceAllocatorFactory 
@@ -103,14 +104,14 @@ namespace base
     class CUDADeviceAllocatorFactory 
     {
         public:
-            static std::shared_ptr<CUDADevcieAllocator> get_instance()
+            static std::shared_ptr<CUDADeviceAllocator> get_instance()
             {
-                if (instance == nullptr) instance = std::make_shared<CUDADevcieAllocator>();
+                if (instance == nullptr) instance = std::make_shared<CUDADeviceAllocator>();
                 return instance;
             }
 
         private:
-            static std::shared_ptr<CUDADevcieAllocator> instance;
+            static std::shared_ptr<CUDADeviceAllocator> instance;
     };
 
     class DeviceAllocatorFactory 
