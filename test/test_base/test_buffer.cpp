@@ -22,6 +22,36 @@ TEST(BufferTest, use_external) {
   delete[] ptr;
 }
 
+TEST(BufferTest, use_external2) {
+  using namespace base;
+  auto alloc = base::DeviceAllocatorFactory::get_instance(DeviceType::DeviceCPU);
+  float* ptr = new float[32];
+  {
+    Buffer buffer(32, nullptr, ptr, true);
+    // 外部引用，不会释放ptr
+  }
+  LOG(INFO) << "Here1";
+  {
+    Buffer buffer(32, alloc, ptr, false);
+    // 内部分配，释放ptr
+    LOG(INFO) << "Here2";
+  }
+  LOG(INFO) << "Here3";
+
+
+  std::shared_ptr<Buffer> buffer = std::make_shared<Buffer>(32, alloc, nullptr, false);
+  {
+    std::shared_ptr<Buffer> buffer2 = buffer;
+    LOG(INFO) << "buffer use count: " << buffer.use_count() << std::endl;
+    // 共享指针，不会释放ptr
+    LOG(INFO) << "Here4";
+  }
+  LOG(INFO) << "buffer use count: " << buffer.use_count() << std::endl;
+  LOG(INFO) << "Here5";
+  // EXPECT_EQ(buffer.is_external(), true);
+  //   delete[] ptr;
+}
+
 TEST(BufferTest, cuda_memcpy1) {
   using namespace base;
   auto alloc = base::CPUDeviceAllocatorFactory::get_instance();

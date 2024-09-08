@@ -17,6 +17,7 @@ namespace base
     {
         if (this->ptr_ == nullptr && this->allocator_ != nullptr)
         {
+            this->device_type_ = this->allocator_->device_type();
             this->use_external_ = false;
             this->ptr_ = this->allocator_->allocate(this->byte_size_);
         }
@@ -31,6 +32,7 @@ namespace base
             this->allocator_
         )
         {
+            LOG(INFO) << "Releasing buffer of size " << this->byte_size_ << " bytes";
             this->allocator_->release(this->ptr_);
             this->ptr_ = nullptr;
         }
