@@ -6,7 +6,7 @@
   - [x] 统一CPU/CUDA端设备分配器
   - [x] CPU端
   - [x] CUDA端
-- [ ] Tensor类的实现
+- [x] Tensor类的实现
 - [ ] 算子注册管理
 - [ ] 算子类
   - [ ] Flash Attention
