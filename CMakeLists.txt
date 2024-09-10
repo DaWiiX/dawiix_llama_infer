@@ -59,6 +59,7 @@ find_package(Armadillo REQUIRED)
 
 # ---- Add source files ----
 aux_source_directory(src/base/ DIR_BASE)
+aux_source_directory(src/tensor/ DIR_TENSOR)
 
 # ---- set library output directory ----
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)

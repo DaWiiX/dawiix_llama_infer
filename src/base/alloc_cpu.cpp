@@ -1,6 +1,6 @@
 #include <glog/logging.h>
 #include <cstdlib>
-#include "../../include/base/alloc.h"
+#include "base/alloc.h"
 
 #if (defined(_POSIX_ADVISORY_INFO) && (_POSIX_ADVISORY_INFO >= 200112L))
 #define HAVE_USE_POSIX_MEMALIGN

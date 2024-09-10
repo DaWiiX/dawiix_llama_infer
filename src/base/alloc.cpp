@@ -1,6 +1,7 @@
-#include "../../include/base/alloc.h"
 #include <cuda_runtime_api.h>
 #include <glog/logging.h>
+#include "base/alloc.h"
+
 
 namespace base 
 {

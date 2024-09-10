@@ -8,6 +8,7 @@
         (void)(x); \
     } while (0)
 
+
 namespace model
 {
     enum class ModuleBufferType

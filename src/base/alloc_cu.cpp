@@ -1,5 +1,5 @@
 #include <cuda_runtime_api.h>
-#include "../../include/base/alloc.h"
+#include "base/alloc.h"
 
 namespace base {
     CUDADeviceAllocator::CUDADeviceAllocator()

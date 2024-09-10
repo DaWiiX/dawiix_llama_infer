@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BASE_BUFFER_H_
 #define INCLUDE_BASE_BUFFER_H_
 #include <memory>
-#include "alloc.h"
+#include "base/alloc.h"
 
 namespace base
 {
