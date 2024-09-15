@@ -202,7 +202,7 @@ TEST(TensorTest, Assign)
     EXPECT_EQ(t2_cpu.dtype(), DataType::DataTypeFp32);
     for (int i = 0; i < 32 * 32; ++i)
     {
-        EXPECT_EQ(*(p2.get() + i), 1.f);
+        EXPECT_EQ(*(reinterpret_cast<float *>((p2.get())->ptr()) + i), 1.f);
         EXPECT_EQ(*(t2_cpu.ptr<float>() + i), *(p1 + i));
     }
     // free(p2);
