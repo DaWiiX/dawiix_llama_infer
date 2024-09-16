@@ -37,7 +37,7 @@ namespace op
                 base::DeviceType device_type,
                 LayerType layer_type,
                 base::DataType dtype,
-                const std::string& layer_name = ""
+                std::string layer_name = ""
             );
 
             base::DataType dtype() const;
@@ -138,8 +138,7 @@ namespace op
             (
                 base::DeviceType device_type,
                 LayerType layer_type,
-                base::DataType dtype,
-                const std::string& layer_name = ""
+                std::string layer_name = ""
             );
 
             base::Status init() override;
@@ -174,6 +173,7 @@ namespace op
                 const tensor::Tensor& tensor,
                 base::DeviceType device_type,
                 base::DataType dtype,
+                int32_t expected_dims,
                 ...
             ) const;
 
@@ -225,9 +225,11 @@ namespace op
 
             virtual void to_cuda();
 
+            virtual void to_cpu();
+
             void set_cuda_config(std::shared_ptr<kernel::CudaConfig> cuda_config);
 
-            std::shared_ptr<kernel::CudaConfig> get_cuda_config();
+            std::shared_ptr<kernel::CudaConfig> get_cuda_config() const;
     };
 
     class LayerParam : public Layer
@@ -244,7 +246,7 @@ namespace op
                 base::DeviceType device_type,
                 LayerType layer_type,
                 bool is_quant_layer,
-                const std::string& layer_name = ""
+                std::string layer_name = ""
             );
 
             base::Status set_weight(int32_t index, const tensor::Tensor& weight) override;
@@ -272,6 +274,8 @@ namespace op
             void set_group_size(int32_t group_size);
 
             void to_cuda() override;
+
+            void to_cpu() override;
     };
 }
 #endif // __INCLUDE_OP_LAYER_H_

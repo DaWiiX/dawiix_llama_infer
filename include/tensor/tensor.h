@@ -105,6 +105,8 @@ namespace tensor
 
             bool assign(std::shared_ptr<base::Buffer> buffer);
 
+            void set_device_type(base::DeviceType device_type) const;
+
             void reset(base::DataType dtype, const std::vector<int32_t>& dims);
 
             tensor::Tensor clone() const;
@@ -178,24 +180,28 @@ namespace tensor
         return *reinterpret_cast<const T*>(this->buffer_->ptr() + offset);
     }
 
-    inline static size_t data_type_size(base::DataType dtype)
-    {
-        switch (dtype)
-        {
-        case base::DataType::DataTypeFp32:
-            return 4;
+    // inline static size_t data_type_size(base::DataType dtype)
+    // {
+    //     switch (dtype)
+    //     {
+    //     case base::DataType::DataTypeFp32:
+    //         return 4;
 
-        case base::DataType::DataTypeInt8:
-            return 1;
+    //     case base::DataType::DataTypeInt8:
+    //         return 1;
 
-        case base::DataType::DataTypeInt32:
-            return 4;
+    //     case base::DataType::DataTypeInt32:
+    //         return 4;
 
-        default:
-            LOG(FATAL) << "Unsupported data type: " << static_cast<int>(dtype);
-            return 0;
-        }
-    }
+    //     default:
+    //         LOG(FATAL) << "Unsupported data type: " << static_cast<int>(dtype);
+    //         return 0;
+    //     }
+    // }
+
+    template <typename T, typename Tp>
+    size_t reduce_dimensions(T begin, T end, Tp init);
+
 }  // namespace tensor
 
 #endif  // INCLUDE_TENSOR_H_

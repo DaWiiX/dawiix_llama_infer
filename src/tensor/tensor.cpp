@@ -8,7 +8,7 @@
 namespace tensor
 {
     template<typename T, typename Tp>
-    static size_t reduce_dimensions(T begin, T end, Tp init)
+    size_t reduce_dimensions(T begin, T end, Tp init)
     {
         if (begin >= end)
         {
@@ -21,7 +21,7 @@ namespace tensor
 
     size_t Tensor::byte_size() const 
     {
-        return this->size_ * tensor::data_type_size(this->dtype_);
+        return this->size_ * base::DataTypeSize(this->dtype_);
     }
 
     size_t Tensor::size() const
@@ -134,11 +134,12 @@ namespace tensor
         {
             this->allocate(alloc, true);
         }
-        else if (ptr)
+        // else if (ptr)
+        else // NOTE: 无需判断ptr是否为空，如果为true，则为外部引用情况，如果为false，buffer自己会初始化一个空的，也就是说，我们的tensor构造完了一定是有个buffer的
         {
             this->init_buffer(alloc, this->dtype_, need_alloc, ptr);
         }
-        else return; // 初始化buffer为空，仅赋值dtype和dims，后续使用assign函数赋值buffer
+        // else return; // 初始化buffer为空，仅赋值dtype和dims，后续使用assign函数赋值buffer
     }
 
     Tensor::Tensor
@@ -253,6 +254,7 @@ namespace tensor
 
     void Tensor::to_cuda(cudaStream_t stream)
     {
+        // NOTE:为什么这里不直接检查tensor.empty()呢？
         CHECK(this->buffer_ != nullptr);
         const base::DeviceType device_type = this->device_type();
         switch (device_type)
@@ -352,6 +354,14 @@ namespace tensor
 
         this->buffer_ = buffer;
         return true;
+    }
+
+    void Tensor::set_device_type(base::DeviceType device_type) const
+    {
+        if (this->buffer_ != nullptr)
+        {
+            this->buffer_->set_device_type(device_type);
+        }
     }
 
     // 重塑这个tensor，并将其buffer置为nullptr，等待下一次分配

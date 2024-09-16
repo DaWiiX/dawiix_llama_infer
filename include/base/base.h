@@ -55,9 +55,13 @@ namespace base
     inline size_t DataTypeSize(DataType data_type)
     {
         if (data_type == DataType::DataTypeFp32) return sizeof(float);
-        if (data_type == DataType::DataTypeInt8) return sizeof(int8_t);
-        if (data_type == DataType::DataTypeInt32) return sizeof(int32_t);
-        else return 0;
+        else if (data_type == DataType::DataTypeInt8) return sizeof(int8_t);
+        else if (data_type == DataType::DataTypeInt32) return sizeof(int32_t);
+        else 
+        {
+            LOG(FATAL) << "Unknown data type: " << static_cast<int>(data_type);
+            return 0;
+        }
     }
 
     std::ostream& operator<<(std::ostream& os, const DeviceType& x);
