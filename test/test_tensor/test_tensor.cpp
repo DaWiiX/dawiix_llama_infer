@@ -6,7 +6,7 @@
 
 #include "../utils.cuh"
 #include "base/buffer.h"
-
+#include "base/base.h"
 
 TEST(TensorTest, ConstructorCPU)
 {
@@ -19,7 +19,7 @@ TEST(TensorTest, ConstructorCPU)
 
     EXPECT_EQ(test_tensor.size(), 24);
     EXPECT_EQ(test_tensor.dtype(), dtype);
-    EXPECT_EQ(test_tensor.byte_size(), 24 * tensor::data_type_size(dtype));
+    EXPECT_EQ(test_tensor.byte_size(), 24 * base::DataTypeSize(dtype));
     EXPECT_EQ(test_tensor.device_type(), base::DeviceType::DeviceCPU);
     EXPECT_EQ(test_tensor.dims(), dims);
 
@@ -42,7 +42,7 @@ TEST(TensorTest, ConstructorCUDA)
 
     EXPECT_EQ(test_tensor.size(), 24);
     EXPECT_EQ(test_tensor.dtype(), dtype);
-    EXPECT_EQ(test_tensor.byte_size(), 24 * tensor::data_type_size(dtype));
+    EXPECT_EQ(test_tensor.byte_size(), 24 * base::DataTypeSize(dtype));
     EXPECT_EQ(test_tensor.device_type(), base::DeviceType::DeviceCUDA);
     EXPECT_EQ(test_tensor.dims(), dims);
 
@@ -108,7 +108,7 @@ TEST(TensorTest, CUDA_Clone)
     tensor::Tensor t2_cu = t1_cu.clone();
     EXPECT_EQ(t2_cu.device_type(), DeviceType::DeviceCUDA);
     EXPECT_EQ(t2_cu.size(), 32 * 32);
-    EXPECT_EQ(t2_cu.byte_size(), 32 * 32 * tensor::data_type_size(DataType::DataTypeFp32));
+    EXPECT_EQ(t2_cu.byte_size(), 32 * 32 * base::DataTypeSize(DataType::DataTypeFp32));
     EXPECT_EQ(t2_cu.dtype(), DataType::DataTypeFp32);
 
     float* p1 = new float[32 * 32];
@@ -149,7 +149,7 @@ TEST(TensorTest, CPU_Clone)
     tensor::Tensor t2_cpu = t1_cpu.clone();
     EXPECT_EQ(t2_cpu.device_type(), DeviceType::DeviceCPU);
     EXPECT_EQ(t2_cpu.size(), 32 * 32);
-    EXPECT_EQ(t2_cpu.byte_size(), 32 * 32 * tensor::data_type_size(DataType::DataTypeFp32));
+    EXPECT_EQ(t2_cpu.byte_size(), 32 * 32 * base::DataTypeSize(DataType::DataTypeFp32));
     EXPECT_EQ(t2_cpu.dtype(), DataType::DataTypeFp32);
 
     for (int i = 0; i < 32 * 32; ++i)
@@ -198,7 +198,7 @@ TEST(TensorTest, Assign)
     LOG(INFO) << "buffer count " << buffer.use_count();
     EXPECT_EQ(t2_cpu.device_type(), DeviceType::DeviceCPU);
     EXPECT_EQ(t2_cpu.size(), 32 * 32);
-    EXPECT_EQ(t2_cpu.byte_size(), 32 * 32 * tensor::data_type_size(DataType::DataTypeFp32));
+    EXPECT_EQ(t2_cpu.byte_size(), 32 * 32 * base::DataTypeSize(DataType::DataTypeFp32));
     EXPECT_EQ(t2_cpu.dtype(), DataType::DataTypeFp32);
     for (int i = 0; i < 32 * 32; ++i)
     {
