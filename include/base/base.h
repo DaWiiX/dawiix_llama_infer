@@ -121,31 +121,34 @@ namespace base
 
     namespace error
     {
-        #define STATUS_CHECK(call)                    \
-        do                                            \
-        {                                             \
-            const base::Status& status = call;        \
-            if (!status)                              \
-            {                                         \
-                const size_t buf_size = 512;          \
-                char buf[buf_size];                   \
-                snprintf(buf)                         \
-            }                                         \
-        } while (0)                                   \
+        #define STATUS_CHECK(call)                                                                       \
+            do                                                                                           \
+            {                                                                                            \
+                const base::Status &status = call;                                                       \
+                if (!status)                                                                             \
+                {                                                                                        \
+                    const size_t buf_size = 512;                                                         \
+                    char buf[buf_size];                                                                  \
+                    snprintf(buf, buf_size - 1,                                                          \
+                            "Infer error\n File:%s Line:%d\n Error code:%d\n Error msg:%s\n", __FILE__,  \
+                            __LINE__, int(status), status.get_err_msg().c_str());                        \
+                    LOG(FATAL) << buf;                                                                   \
+                }                                                                                        \
+            } while (0)
 
-        Status Success(const std::string& err_msg = "");
+        Status Success(const std::string& err_msg = "success");
 
-        Status FunctionNotImplement(const std::string& err_msg = "");
+        Status FunctionNotImplement(const std::string& err_msg = "function not implement");
 
-        Status PathNotValid(const std::string& err_msg = "");
+        Status PathNotValid(const std::string& err_msg = "path not valid");
 
-        Status ModelParseError(const std::string& err_msg = "");
+        Status ModelParseError(const std::string& err_msg = "model parse error");
 
-        Status InternalError(const std::string& err_msg = "");
+        Status InternalError(const std::string& err_msg = "internal error");
 
-        Status KeyValueHasExist(const std::string& err_msg = "");
+        Status KeyValueHasExist(const std::string& err_msg = "key value has existed");
 
-        Status InvalidArgument(const std::string& err_msg = "");
+        Status InvalidArgument(const std::string& err_msg = "invalid argument");
     }
 
     std::ostream& operator<<(std::ostream& os, const Status& x);
