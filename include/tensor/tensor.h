@@ -168,16 +168,16 @@ namespace tensor
     T& Tensor::index(int64_t offset)
     {
         CHECK(offset >= 0 && offset < this->size_) << "The offset is out of range.";
-
-        return *reinterpret_cast<T*>(this->buffer_->ptr() + offset);
+        T &val = *(reinterpret_cast<T *>(this->buffer_->ptr()) + offset);
+        return val;
     }
 
     template<typename T>
     const T& Tensor::index(int64_t offset) const
     {
         CHECK(offset >= 0 && offset < this->size_) << "The offset is out of range.";
-
-        return *reinterpret_cast<const T*>(this->buffer_->ptr() + offset);
+        const T &val = *(reinterpret_cast<T *>(this->buffer_->ptr()) + offset);
+        return val;
     }
 
     // inline static size_t data_type_size(base::DataType dtype)
