@@ -143,17 +143,9 @@ namespace op
         ...
     ) const
     {
-        if (tensor.is_empty())
+        if (!(this->check_tensor(tensor, device_type, dtype)))
         {
-            return base::error::InvalidArgument("The tensor parameter is empty.");
-        }
-        if (tensor.device_type() != device_type)
-        {
-            return base::error::InvalidArgument("The tensor parameter is not on the same device as the layer.");
-        }
-        if (tensor.dtype() != dtype)
-        {
-            return base::error::InvalidArgument("The tensor parameter is not of the same data type as the layer.");
+            return base::error::InvalidArgument("The tensor parameter is not valid.");
         }
         int32_t dims = tensor.dims_size();
         if (dims != expected_dims)
@@ -162,8 +154,8 @@ namespace op
         }
 
         std::va_list args;
-        va_start(args, dtype);
-        
+        va_start(args, expected_dims);
+
         for (int32_t i = 0; i < dims; i++)
         {
             int32_t dim = va_arg(args, int32_t);
