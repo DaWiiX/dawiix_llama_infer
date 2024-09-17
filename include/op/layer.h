@@ -131,7 +131,7 @@ namespace op
         protected:
             std::vector<tensor::Tensor> inputs_;
             std::vector<tensor::Tensor> outputs_;
-            std::shared_ptr<kernel::CudaConfig> cuda_config_;
+            std::shared_ptr<kernel::CudaConfig> cuda_config_ = nullptr;
 
         public:
             explicit Layer
