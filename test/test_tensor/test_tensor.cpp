@@ -184,17 +184,17 @@ TEST(TensorTest, Assign)
         *(p1 + i) = 1.f;
     }
 
-    tensor::Tensor t2_cpu(DataType::DataTypeFp32, 32, 32);
-    auto buffer = std::make_shared<Buffer>(32*32*sizeof(float), alloc_cpu,nullptr,false);
+    tensor::Tensor t2_cpu(DataType::DataTypeFp32, 32, 32, true, alloc_cpu);
+    auto buffer = std::make_shared<Buffer>(32*32*sizeof(float), alloc_cpu, nullptr,false);
     LOG(INFO) << "buffer count " << buffer.use_count();
-    auto p2 = buffer->get_shared_from_this();
+    auto p2 = buffer;
     LOG(INFO) << "buffer count " << buffer.use_count();
     for (int i = 0; i < 32 * 32; ++i)
     {
         *(reinterpret_cast<float*>((p2.get())->ptr()) + i) = 1.f;
     }
 
-    t2_cpu.assign(buffer);
+    EXPECT_EQ(t2_cpu.assign(buffer), true);
     LOG(INFO) << "buffer count " << buffer.use_count();
     EXPECT_EQ(t2_cpu.device_type(), DeviceType::DeviceCPU);
     EXPECT_EQ(t2_cpu.size(), 32 * 32);
