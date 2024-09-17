@@ -7,11 +7,11 @@
   - [x] CPU端
   - [x] CUDA端
 - [x] Tensor类的实现
-- [ ] 算子注册管理
+- [x] 算子注册管理
 - [ ] 算子类
   - [ ] Flash Attention
   - [ ] SGEMV
-  - [ ] RMSNorm
+  - [x] RMSNorm
   - [ ] SwiGLU
   - [ ] 其他
 - [ ] Sampler
