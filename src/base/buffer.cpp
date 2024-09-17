@@ -145,11 +145,11 @@ namespace base
 
     const void* Buffer::ptr() const { return this->ptr_; }
 
-    const size_t Buffer::byte_size() const { return this->byte_size_; }
+    size_t Buffer::byte_size() const { return this->byte_size_; }
 
     std::shared_ptr<DeviceAllocator> Buffer::allocator() const { return this->allocator_; }
 
-    const DeviceType Buffer::device_type() const { return this->device_type_; }
+    DeviceType Buffer::device_type() const { return this->device_type_; }
 
     void Buffer::set_device_type(const DeviceType device_type) { this->device_type_ = device_type; }
 

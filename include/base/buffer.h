@@ -35,11 +35,11 @@ namespace base
 
         const void* ptr() const;
 
-        const size_t byte_size() const;
+        size_t byte_size() const;
 
         std::shared_ptr<DeviceAllocator> allocator() const;
 
-        const DeviceType device_type() const;
+        DeviceType device_type() const;
 
         void set_device_type(DeviceType device_type);
 
