@@ -41,7 +41,7 @@ namespace kernel
         __syncthreads();
 
         sum = shared_val;
-        const float scale = sqrtf(sum / static_cast<float>(size) + eps);
+        const float scale = rsqrtf(sum / static_cast<float>(size) + eps);
 
         float4* output_pack = reinterpret_cast<float4*>(output);
         float4* weight_pack = reinterpret_cast<float4*>(weight);

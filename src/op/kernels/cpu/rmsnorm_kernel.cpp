@@ -24,10 +24,10 @@ namespace kernel
         arma::fvec output_tensor(const_cast<float*>(output_ptr), dim, false, true);
         
         const float epsilon = 1e-5f;
-        const float mean = arma::as_scalar(arma::mean(arma::pow(input_tensor, 2) + epsilon));
-        const float rs_sqrt = 1.f / std::sqrt(mean);
+        const float mean = arma::as_scalar(arma::mean(arma::pow(input_tensor, 2)) + epsilon);
+        const float rsqrt = 1.f / std::sqrt(mean);
 
         // %	element-wise multiplication of two objects (Schur product)
-        output_tensor = weight_tensor % (input_tensor * rs_sqrt);
+        output_tensor = weight_tensor % (input_tensor * rsqrt);
     }
 }
