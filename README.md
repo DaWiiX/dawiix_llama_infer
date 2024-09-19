@@ -1,6 +1,9 @@
 # dawiix_llama_infer
 This repository is for the study and reproduction of [KuiperLlama](https://github.com/zjhellofss/KuiperLLama), thanks to the original repository author for providing such a comprehensive learning project.
 
+# learning journey
+https://zxmucttizt8.feishu.cn/wiki/IdR4wYCGoi3omekZVNacDxd8nGh?from=from_copylink
+
 # Reproduction Progress
 - [x] Unified memory resource management
   - [x] Unified CPU/CUDA device allocator
