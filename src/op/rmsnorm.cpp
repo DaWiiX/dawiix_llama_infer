@@ -25,6 +25,7 @@ namespace op
         if (!status)
         {
             LOG(ERROR) << "Input tensor must be a vector with dim " << this->dim_ << "in the RMSNorm layer.";
+            return status;
         }
 
         status = this->check_tensor_with_dim(
@@ -37,6 +38,7 @@ namespace op
         if (!status)
         {
             LOG(ERROR) << "Output tensor must be a vector with dim " << this->dim_ << "in the RMSNorm layer.";
+            return status;
         }
 
         status = this->check_tensor_with_dim(
@@ -49,9 +51,10 @@ namespace op
         if (!status)
         {
             LOG(ERROR) << "Weight tensor must be a vector with dim " << this->dim_ << "in the RMSNorm layer.";
+            return status;
         }
 
-        return status;
+        return base::error::Success();
     }
 
     base::Status RMSNormLayer::forward()

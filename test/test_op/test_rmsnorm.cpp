@@ -8,7 +8,8 @@
 #include "../utils.cuh"
 #include "base/buffer.h"
 
-TEST(RMSNormTest, RMSNorm_NOSTREAM)
+using namespace kernel;
+TEST(RMSNormTest, RMSNormNOSTREAM)
 {
     auto alloc_cu = base::DeviceAllocatorFactory::get_instance(base::DeviceType::DeviceCUDA);
     auto alloc_cpu = base::DeviceAllocatorFactory::get_instance(base::DeviceType::DeviceCPU);
@@ -64,7 +65,7 @@ TEST(RMSNormTest, RMSNorm_NOSTREAM)
     }
 }
 
-TEST(RMSNormTest, RMSNorm_STREAM1)
+TEST(RMSNormTest, RMSNormSTREAM1)
 {
     auto alloc_cu = base::CUDADeviceAllocatorFactory::get_instance();
     auto alloc_cpu = base::CPUDeviceAllocatorFactory::get_instance();
@@ -106,7 +107,7 @@ TEST(RMSNormTest, RMSNorm_STREAM1)
     cudaStreamDestroy(stream);
 }
 
-TEST(RMSNormTest, RMSNorm_STREAM2)
+TEST(RMSNormTest, RMSNormSTREAM2)
 {
     auto alloc_cu = base::CUDADeviceAllocatorFactory::get_instance();
     auto alloc_cpu = base::CPUDeviceAllocatorFactory::get_instance();
