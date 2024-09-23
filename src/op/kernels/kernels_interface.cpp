@@ -3,12 +3,19 @@
 
 #include "op/kernels/cpu/add_kernel.h"
 #include "op/kernels/cuda/add_kernel.cuh"
+
 #include "op/kernels/cpu/matmul_kernel.h"
 #include "op/kernels/cuda/matmul_kernel.cuh"
+
 #include "op/kernels/cpu/emb_kernel.h"
 #include "op/kernels/cuda/emb_kernel.cuh"
+
+#include "op/kernels/cpu/rope_kernel.h"
+#include "op/kernels/cuda/rope_kernel.cuh"
+
 #include "op/kernels/cpu/swiglu_kernel.h"
 #include "op/kernels/cuda/swiglu_kernel.cuh"
+
 #include "op/kernels/cpu/rmsnorm_kernel.h"
 #include "op/kernels/cuda/rmsnorm_kernel.cuh"
 
@@ -83,6 +90,26 @@ namespace kernel
             case base::DeviceType::DeviceCUDA:
             {
                 return emb_kernel_cu;
+            }
+            default:
+            {
+                LOG(FATAL) << "Unsupported device type: " << device_type;
+                return nullptr;
+            }
+        }
+    }
+
+    RoPEKernel get_rope_kernel(base::DeviceType device_type)
+    {
+        switch (device_type)
+        {
+            case base::DeviceType::DeviceCPU:
+            {
+                return rope_kernel_cpu;
+            }
+            case base::DeviceType::DeviceCUDA:
+            {
+                return rope_kernel_cu;
             }
             default:
             {
