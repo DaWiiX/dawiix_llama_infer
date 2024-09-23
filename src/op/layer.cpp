@@ -385,7 +385,7 @@ namespace op
             CHECK(weight_size % this->group_size_ == 0);
 
             int32_t scale_nums = weight_size / this->group_size_;
-            // 量化比例可能是存储在weight_ptr之后的
+            // 量化比例存储在weight_ptr之后
             this->scales_ = tensor::Tensor(base::DataType::DataTypeFp32, scale_nums, false, nullptr, reinterpret_cast<float*>((int8_t*)weight_ptr + weight_size));
             this->scales_.set_device_type(device_type);
         }

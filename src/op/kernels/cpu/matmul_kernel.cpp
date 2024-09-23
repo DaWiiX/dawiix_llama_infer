@@ -20,6 +20,7 @@ namespace kernel
         int32_t in_dim0 = 1;
         int32_t in_dim1 = 1;
 
+        // actually input is 1D tensor
         if (input.dims_size() == 2)
         {
             in_dim0 = input.get_dim(0);
