@@ -278,4 +278,4 @@ namespace op
             void to_cpu() override;
     };
 }
-#endif // _INCLUDE_OP_LAYER_H_
+#endif // INCLUDE_OP_LAYER_H_
