@@ -4,13 +4,13 @@
 namespace op
 {
     VecAddLayer::VecAddLayer(base::DeviceType device_type)
-    : Layer(device_type, LayerType::LayerAdd, "Add")
+        : Layer(device_type, LayerType::LayerAdd, "Add")
     {
         this->reset_input_size(2);
         this->reset_output_size(1);
     }
 
-    base::Status VecAddLayer::check() const 
+    base::Status VecAddLayer::check() const
     {
         tensor::Tensor input1 = this->get_input(0);
         tensor::Tensor input2 = this->get_input(1);
@@ -18,19 +18,22 @@ namespace op
         base::Status status;
         status = check_tensor_with_dim(input1, device_type_, dtype_, 1, size);
 
-        if (!status) {
+        if (!status)
+        {
             LOG(ERROR) << "The input tensor 1 error in the add layer.";
             return status;
         }
 
         status = check_tensor_with_dim(input2, device_type_, dtype_, 1, size);
-        if (!status) {
+        if (!status)
+        {
             LOG(ERROR) << "The input tensor 2 error in the add layer.";
             return status;
         }
 
         status = check_tensor_with_dim(get_output(0), device_type_, dtype_, 1, size);
-        if (!status) {
+        if (!status)
+        {
             LOG(ERROR) << "The output tensor error in the add layer.";
             return status;
         }
@@ -40,17 +43,19 @@ namespace op
     base::Status VecAddLayer::forward()
     {
         auto status = this->check();
-        if (!status) {
+        if (!status)
+        {
             return status;
         }
         auto input1 = this->get_input(0);
         auto input2 = this->get_input(1);
         auto output = this->get_output(0);
-        if (device_type_ == base::DeviceType::DeviceCUDA) {
+        if (device_type_ == base::DeviceType::DeviceCUDA)
+        {
             CHECK(cuda_config_ != nullptr);
         }
         kernel::get_add_kernel(device_type_)(input1, input2, output,
-                                            cuda_config_ ? cuda_config_->stream : nullptr);
+                                             cuda_config_ ? cuda_config_->stream : nullptr);
         return base::error::Success();
     }
 
