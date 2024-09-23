@@ -39,7 +39,15 @@ namespace kernel
         const tensor::Tensor& output, 
         int32_t vocab_size, 
         void* stream
-    );   
+    );
+
+    using SwigluKernel = void (*)
+    (
+        const tensor::Tensor& input1, 
+        const tensor::Tensor& input2,
+        const tensor::Tensor& output, 
+        void* stream
+    );
 
     using RMSNormKernel = void (*)
     (
@@ -56,6 +64,8 @@ namespace kernel
     MatmulKernelQuant get_matmul_kernel_quant8(base::DeviceType device_type);
 
     EmbeddingKernel get_emb_kernel(base::DeviceType device_type);
+    
+    SwigluKernel get_swiglu_kernel(base::DeviceType device_type);
 
     RMSNormKernel get_rmsnorm_kernel(base::DeviceType device_type);
 
