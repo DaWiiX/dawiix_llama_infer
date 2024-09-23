@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_OP_LAYER_H_
-#define __INCLUDE_OP_LAYER_H_
+#ifndef INCLUDE_OP_LAYER_H_
+#define INCLUDE_OP_LAYER_H_
 #include <base/cuda_config.h>
 #include <string>
 #include <vector>
@@ -278,4 +278,4 @@ namespace op
             void to_cpu() override;
     };
 }
-#endif // __INCLUDE_OP_LAYER_H_
+#endif // _INCLUDE_OP_LAYER_H_
