@@ -103,6 +103,8 @@ namespace tensor
 
             std::vector<size_t> strides() const;
 
+            std::shared_ptr<base::Buffer> get_buffer() const;
+
             bool assign(std::shared_ptr<base::Buffer> buffer);
 
             void set_device_type(base::DeviceType device_type) const;

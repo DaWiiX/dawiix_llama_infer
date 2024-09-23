@@ -5,6 +5,14 @@
 
 namespace kernel
 {
+    using AddKernel = void (*)
+    (
+        const tensor::Tensor &input1,
+        const tensor::Tensor &input2,
+        const tensor::Tensor &output,
+        void *stream
+    );
+
     using RMSNormKernel = void (*)
     (
         const tensor::Tensor &input,
@@ -31,6 +39,8 @@ namespace kernel
         const tensor::Tensor& scale, 
         const CudaConfig* config
     );
+    
+    AddKernel get_add_kernel(base::DeviceType device_type);
 
     RMSNormKernel get_rmsnorm_kernel(base::DeviceType device_type);
 

@@ -328,6 +328,11 @@ namespace tensor
         }
         return strides;
     }
+
+    std::shared_ptr<base::Buffer> Tensor::get_buffer() const
+    {
+        return this->buffer_;
+    }
     
     // 有点像赋值，应用场景是新建一个tensor，然后把原tensor的buffer赋值给新tensor
     bool Tensor::assign(std::shared_ptr<base::Buffer> buffer)
