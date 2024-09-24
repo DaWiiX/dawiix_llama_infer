@@ -125,7 +125,7 @@ namespace base {
         {
             if (this->no_busy_cnt_[it.first] > 1024*1024*1024)
             {
-                status = cudaSetDevice(it.first);
+                // status = cudaSetDevice(it.first);
                 auto& cuda_buffers = it.second;
                 std::vector<CudaMemoryBuffer> temp;
                 for (int i = 0; i < cuda_buffers.size(); ++i)
@@ -133,12 +133,16 @@ namespace base {
                     // 找到空闲区并尝试释放
                     if (cuda_buffers[i].busy == false)
                     {
+                        status = cudaSetDevice(it.first);
                         status = cudaFree(cuda_buffers[i].data);
                         CHECK(status == cudaSuccess) << "Error: CUDA error when release memory on device " << it.first;
                     }
                     // 如果不是空闲区就还装回去
                     else temp.push_back(cuda_buffers[i]);
                 }
+                cuda_buffers.clear();
+                it.second = temp;
+                no_busy_cnt_[it.first] = 0;
             }
         }
 
@@ -162,6 +166,9 @@ namespace base {
                     // 如果不是空闲区就还装回去
                     else temp.push_back(cuda_buffers[i]);
                 }
+                cuda_buffers.clear();
+                it.second = temp;
+                no_busy_cnt_[it.first] = 0;
             }
         }
 

@@ -37,8 +37,10 @@ namespace base {
 
     void CPUDeviceAllocator::release(void* ptr) const
     {
-        if (ptr == nullptr) return;
-        else free(ptr);
+        if (ptr) 
+        {
+            free(ptr);
+        }
     }
 
     std::shared_ptr<CPUDeviceAllocator> CPUDeviceAllocatorFactory::instance = nullptr;

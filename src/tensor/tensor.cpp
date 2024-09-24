@@ -154,7 +154,15 @@ namespace tensor
     {
         this->dims_.push_back(dim0);
         this->size_ = dim0;
-        this->initTensor(need_alloc, alloc, ptr);
+        if (need_alloc && alloc) {
+            allocate(alloc);
+        } else {
+            if (ptr != nullptr) {
+            CHECK(need_alloc == false)
+                << "The need_alloc is is true when ptr parameter is not a null pointer.";
+            init_buffer(alloc, dtype, need_alloc, ptr);
+            }
+        }
     }
 
 
