@@ -74,7 +74,7 @@ namespace op
             input,
             weight,
             output,
-            this->cuda_config_ ? this->cuda_config_->stream : 0
+            this->cuda_config_ ? this->cuda_config_->stream : nullptr
         );
         return base::error::Success();
     }
