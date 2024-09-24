@@ -20,7 +20,7 @@ namespace base
         {
             this->device_type_ = this->allocator_->device_type();
             this->use_external_ = false;
-            this->ptr_ = this->allocator_->allocate(this->byte_size_);
+            this->ptr_ = this->allocator_->allocate(byte_size);
         }
     }
 
@@ -103,7 +103,7 @@ namespace base
     void Buffer::copy_from(const Buffer* buffer) const 
     {
         CHECK(this->allocator_ != nullptr);
-        CHECK(buffer != nullptr && buffer->ptr_ != nullptr);
+        CHECK(buffer != nullptr || buffer->ptr_ != nullptr);
 
         size_t bype_size = this->byte_size_ < buffer->byte_size_? this->byte_size_ : buffer->byte_size_;
         const DeviceType buffer_device = buffer->device_type();

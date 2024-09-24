@@ -62,13 +62,18 @@ namespace tensor
             return false;
         }
         size_t byte_size = this->byte_size();
+        if (!byte_size) {
+            LOG(ERROR) << "The byte_size parameter in the allocate function is equal to zero!";
+            return false;
+        }
+
         if (this->buffer_ && byte_size <= this->buffer_->byte_size())
         {
             if (need_realloc == false) return true;
         }
 
-        this->buffer_ = std::make_shared<base::Buffer>(byte_size,alloc, nullptr, false);
-        if (this->buffer_ == nullptr)
+        this->buffer_ = std::make_shared<base::Buffer>(byte_size, alloc, nullptr, false);
+        if (this->buffer_->ptr() == nullptr)
         {
             LOG(ERROR) << "Failed to allocate memory for tensor.";
             return false;
@@ -85,7 +90,7 @@ namespace tensor
     )
     {
         // 外部引用
-        if (need_alloc==false && alloc==nullptr)
+        if (alloc==nullptr && need_alloc==false)
         {
             std::shared_ptr<base::Buffer> buffer = std::make_shared<base::Buffer>(this->byte_size(), nullptr, ptr, true);
             this->buffer_ = buffer;
@@ -95,34 +100,7 @@ namespace tensor
             this->allocate(alloc, true);
         }
     }
-    
-    // kuiper的奇怪实现
-    // void Tensor::initTensor
-    // (
-    //     bool need_alloc, 
-    //     std::shared_ptr<base::DeviceAllocator> alloc,
-    //     void* ptr
-    // )
-    // {
-    //     if (need_alloc && alloc)
-    //     {
-    //         this->allocate(alloc);
-    //     }
-    //     else
-    //     {
-    //         if (ptr == nullptr)
-    //         {
-    //             LOG(FATAL) << "Data is nullptr and need_alloc is false";
-    //         }
-    //         else
-    //         {
-    //             CHECK(need_alloc == false) << "The need_alloc is is true when ptr parameter is not a null pointer.";
-    //             this->init_buffer(alloc, this->dtype_, need_alloc, ptr);
-    //         }
-    //     }
-    // }
 
-    
     void Tensor::initTensor
     (
         bool need_alloc,
@@ -130,9 +108,9 @@ namespace tensor
         void *ptr
     )
     {
-        if (need_alloc)
+        if (need_alloc && alloc)
         {
-            this->allocate(alloc, true);
+            this->allocate(alloc);
         }
         // else if (ptr)
         else // NOTE: 无需判断ptr是否为空，如果为true，则为外部引用情况，如果为false，buffer自己会初始化一个空的，也就是说，我们的tensor构造完了一定是有个buffer的
@@ -231,7 +209,7 @@ namespace tensor
         std::shared_ptr<base::DeviceAllocator> alloc,
         void* ptr
     )
-    : dtype_(dtype), dims_(dims)
+    : dtype_(dtype), dims_(std::move(dims))
     {
         this->size_ = tensor::reduce_dimensions(this->dims_.begin(), this->dims_.end(), 1);
         this->initTensor(need_alloc, alloc, ptr);
@@ -297,7 +275,7 @@ namespace tensor
         {
             LOG(FATAL) << "Invalid index: " << index << ", when getting dimension " << this->dims_.size();
         }
-        return this->dims_[index];
+        return this->dims_.at(index);
     }
 
     void Tensor::reshape(const std::vector<int32_t>& dims)
@@ -311,7 +289,7 @@ namespace tensor
         }
         if (size > this->size_)
         {
-            auto new_buffer = std::make_shared<base::Buffer>(this->byte_size(), this->buffer_->allocator(), nullptr, false);
+            auto new_buffer = std::make_shared<base::Buffer>(size * base::DataTypeSize(this->dtype_), this->buffer_->allocator(), nullptr, false);
             if (new_buffer->allocate() == false)
             {
                 LOG(FATAL) << "Failed to allocate memory for tensor.";
