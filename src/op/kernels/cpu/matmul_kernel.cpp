@@ -38,8 +38,8 @@ namespace kernel
 
         arma::fmat input_mat(const_cast<float *>(input_ptr), in_dim1, in_dim0, false, true);
         arma::fmat weight_mat(const_cast<float *>(weight_ptr), weight_dim1, weight_dim0, false, true);
-        arma::fmat output_mat(const_cast<float *>(output_ptr), in_dim1, weight_dim1, false, true);
+        arma::fmat output_mat(const_cast<float *>(output_ptr), in_dim1, weight_dim0, false, true);
 
-        output_mat = (input_mat * weight_mat) * scale;
+        output_mat = ((input_mat * weight_mat)) * scale;
     }
 } // namespace kernel

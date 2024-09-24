@@ -13,7 +13,7 @@ namespace op
     : LayerParam(device_type, LayerType::LayerMatmul, is_quant_layer, "Matmul"), dim0_(dim0), dim1_(dim1)
     {
         this->reset_input_size(1);
-        this->reset_input_size(1);
+        this->reset_weight_size(1);
         this->reset_output_size(1);
     }
 
@@ -81,6 +81,7 @@ namespace op
                 this->scales_, 
                 this->device_type_, 
                 base::DataType::DataTypeFp32, 
+                1,
                 this->scales_.size()
             );
             if (!status)
@@ -95,7 +96,22 @@ namespace op
 
     base::Status MatmulLayer::forward()
     {
-        
+        auto status = check();
+        if (!status) {
+        return status;
+        }
+        if (device_type_ == base::DeviceType::DeviceCUDA) {
+            CHECK(cuda_config_ != nullptr);
+        }
+        if (is_quant_layer_) {
+            kernel::get_matmul_kernel_quant8(device_type_)(get_input(0), get_weight(0), get_output(0),
+                                                        group_size_, scales_,
+                                                        cuda_config_ ? cuda_config_.get() : nullptr);
+        } else {
+            kernel::get_matmul_kernel(device_type_)(get_input(0), get_weight(0), get_output(0), 1.f,
+                                                    cuda_config_ ? cuda_config_.get() : nullptr);
+        }
+
         return base::error::Success();
     }
 }
