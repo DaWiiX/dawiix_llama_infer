@@ -71,7 +71,7 @@ namespace op
     void Layer::set_output(int32_t index, const tensor::Tensor& output)
     {
         CHECK(index >= 0);
-        CHECK(index < this->inputs_.size());
+        CHECK(index < this->outputs_.size());
         this->outputs_.at(index) = output;
     }
 
@@ -180,7 +180,6 @@ namespace op
     )
     {
         this->set_input(0, input1);
-
         this->set_output(0, output1);
         return this->forward();
     }
@@ -354,7 +353,7 @@ namespace op
         CHECK(index < this->weights_.size());
         CHECK(weight_ptr != nullptr);
 
-        size_t size = tensor::reduce_dimensions(dims.begin(), dims.end(), 1);
+        size_t size = std::accumulate(dims.begin(), dims.end(), sizeof(float), std::multiplies<>());
         // NOTE:属于外部引用的数据
         std::shared_ptr<base::Buffer> buffer = std::make_shared<base::Buffer>(size, nullptr, const_cast<void*>(weight_ptr), true);
 
@@ -470,14 +469,5 @@ namespace op
             }
         }
     }
-    
-
-
-
-
-
-
-
-
 
 } // namespace op
