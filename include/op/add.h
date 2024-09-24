@@ -7,11 +7,12 @@ namespace op
 {
     class VecAddLayer : public Layer
     {
-        explicit VecAddLayer(base::DeviceType device_type);
+        public:
+            explicit VecAddLayer(base::DeviceType device_type);
 
-        base::Status check() const override;
+            base::Status check() const override;
 
-        base::Status forward() override;
+            base::Status forward() override;
     };
 }  // namespace op
 
