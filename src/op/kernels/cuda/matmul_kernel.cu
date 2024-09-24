@@ -123,8 +123,8 @@ namespace kernel
     {
         const int32_t K = weight.get_dim(0); // row
         const int32_t M = weight.get_dim(1); // col
-        int packet_size = 4;
-        CHECK_EQ(M % packet_size, 0);
+        // int packet_size = 4;
+        // CHECK_EQ(M % packet_size, 0);
 
         CHECK_EQ(M, input.get_dim(0));
         if (config && config->stream)

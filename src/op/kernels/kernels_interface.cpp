@@ -19,6 +19,13 @@
 #include "op/kernels/cpu/rmsnorm_kernel.h"
 #include "op/kernels/cuda/rmsnorm_kernel.cuh"
 
+#include "op/kernels/cpu/scale_kernel.h"
+#include "op/kernels/cpu/scale_sum_kernel.h"
+#include "op/kernels/cpu/softmax_kernel.h"
+
+#include "op/kernels/cpu/mha_kernel.h"
+#include "op/kernels/cuda/mha_kernel.cuh"
+
 
 
 namespace kernel
@@ -158,6 +165,72 @@ namespace kernel
             }
         }
     }
+    SoftmaxInplaceKernel get_softmax_kernel(base::DeviceType device_type)
+    {
+        switch (device_type)
+        {
+            case base::DeviceType::DeviceCPU:
+            {
+                return softmax_inplace_cpu;
+            }
+            default:
+            {
+                LOG(FATAL) << "Unsupported device type: " << device_type;
+                return nullptr;
+            }
+        }
+    }
 
+    ScaleKernel get_scale_kernel(base::DeviceType device_type)
+    {
+        switch (device_type)
+        {
+            case base::DeviceType::DeviceCPU:
+            {
+                return scale_inplace_cpu;
+            }
+            default:
+            {
+                LOG(FATAL) << "Unsupported device type: " << device_type;
+                return nullptr;
+            }
+        }
+    }
+
+    ScaleSumKernel get_scale_sum_kernel(base::DeviceType device_type)
+    {
+        switch (device_type)
+        {
+            case base::DeviceType::DeviceCPU:
+            {
+                return scale_sum_kernel_cpu;
+            }
+            default:
+            {
+                LOG(FATAL) << "Unsupported device type: " << device_type;
+                return nullptr;
+            }
+        }
+    }
+
+    MHAKernel get_mha_kernel(base::DeviceType device_type)
+    {
+        switch (device_type)
+        {
+            case base::DeviceType::DeviceCPU:
+            {
+                return mha_kernel;
+            }
+            case base::DeviceType::DeviceCUDA:
+            {
+                return mha_kernel_cu;
+            }
+            default:
+            {
+                LOG(FATAL) << "Unsupported device type: " << device_type;
+                return nullptr;
+            }
+        }
+    }
     
 }

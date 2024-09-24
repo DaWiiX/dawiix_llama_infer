@@ -1,4 +1,4 @@
-#include "rope_kernel.cuh"
+#include "op/kernels/cuda/rope_kernel.cuh"
 namespace kernel
 {
 
