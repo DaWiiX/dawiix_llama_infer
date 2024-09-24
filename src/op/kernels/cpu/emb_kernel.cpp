@@ -33,7 +33,7 @@ namespace kernel
                 float *src_ptr = const_cast<float *>(weight.ptr<float>(token * weight_dim));
                 if (weight.device_type() == base::DeviceType::DeviceCPU)
                 {
-                    allocator->memcpy(src_ptr, dest_ptr, weight_dim * sizeof(float),
+                    allocator->memcpy(dest_ptr, src_ptr, weight_dim * sizeof(float),
                                       base::MemcpyKind::MemcpyCPU2CPU);
                 }
                 else
