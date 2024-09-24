@@ -11,7 +11,7 @@
 
 namespace model
 {
-    enum class ModuleBufferType
+    enum class ModelBufferType
     {
         InputTokens = 0,
         InputEmbeddings = 1,
@@ -19,6 +19,18 @@ namespace model
         KeyCache = 3,
         ValueCache = 4,
         Query = 5,
+        InputPos = 6,
+        ScoreStorage = 7,
+        OutputMHA = 8,
+        AttnOutput = 9,
+        W1Output = 10,
+        W2Output = 11,
+        W3Output = 12,
+        FFNRMSNorm = 13,
+        ForwardOutput = 15,
+        ForwardOutputCPU = 16,
+        SinCache = 17,
+        CosCache = 18,
     };
 }
 
