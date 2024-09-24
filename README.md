@@ -78,8 +78,9 @@ https://zxmucttizt8.feishu.cn/wiki/IdR4wYCGoi3omekZVNacDxd8nGh?from=from_copylin
   - [x] RMSNorm
   - [x] SwiGLU
   - [x] Others
-- [ ] Sampler
+- [x] Sampler
 - [x] Weight quantization
+- [ ] Model Creation
 - [ ] Weight loading
 - [ ] Conversation demo
 
